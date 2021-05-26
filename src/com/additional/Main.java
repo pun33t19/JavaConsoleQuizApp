@@ -8,14 +8,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.Scanner;
 
-//class Timer  {
-//
-//     public Timer(long num)  throws InterruptedException   {
-//
-//         }
-//
-//     }
-// }
+
  class Csv {  
   public void toReadFile(String root, byte num) throws IOException, CsvValidationException, InterruptedException {
 
