@@ -1,4 +1,4 @@
-Q1.,What is a correct syntax to output "Hello World" in Java?,1.echo("Hello World"),2.print("Hello World"),3.Console.WriteLine("Hello World"),4.System.out.println("Hello World")
-Q2.,What is correct syntax for main method of a java class?,1.public static int main(String[] args),2.public int main(String[] args),3.public static void main(String[] args),4.None of the above
-Q3.,What is the size of int variable?,1.8 bit,2.16 bit,3.32 bit,4.64 bit
-
+Q1. What is a correct syntax to output "Hello World" in Java?,Q2. What is correct syntax for main method of a java class?,Q3. What is the size of int variable?
+1.echo("Hello World"),2.print("Hello World"),3.Console.WriteLine("Hello World"),4.System.out.println("Hello World")
+1.public static int main(String[] args),2.public int main(String[] args),3.public static void main(String[] args),4.none of the above
+1.8 bit,2.16 bit,3.32 bit,4.64 bit

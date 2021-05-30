@@ -4,123 +4,269 @@ import com.opencsv.CSVReader;
 import com.opencsv.CSVReaderBuilder;
 import com.opencsv.exceptions.CsvValidationException;
 
+import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.Scanner;
+import java.nio.Buffer;
+import java.security.AllPermission;
+import java.util.*;
 
 
- class Csv {  
+class Csv {
+    int n=0;
   public void toReadFile(String root, byte num) throws IOException, CsvValidationException, InterruptedException {
 
-        FileReader reader = new FileReader(root);
+        FileReader f=new FileReader(root);
+
 
         if (num == 1) {
 
-            CSVReader access = new CSVReader(reader);
+           CSVReader access= new CSVReader(f);
             singleCorrect(access);
         } else if (num == 2) {
-            CSVReader access = new CSVReader(reader);
+            CSVReader access = new CSVReader(new FileReader(root));
             multiCorrectCpp(access);
         } else if (num == 3) {
-            CSVReader access = new CSVReader(reader);
+            CSVReader access = new CSVReader(new FileReader(root));
                 multiCorrectPython(access);
         }
     }
-        public void singleCorrect(CSVReader obj) throws CsvValidationException, IOException {
-            int n = 0;
-            String[] data;
-            questionModel Q1 = new questionModel();
-            while ((data = obj.readNext()) != null) {
-                for (String element3 : data
-                ) {
-                    System.out.println(element3 + " ");
-                }
-                n++;
-                int[] arr = new int[3];
-                System.out.println("Please enter your answer: ");
-                Scanner ans = new Scanner(System.in);
-                arr[n - 1] = ans.nextInt();
-                if (arr[0] == 4 || arr[1] == 3 || arr[2] == 3) {
-                    Q1.correct();
-                } else {
-                    Q1.wrong();
-                }
-                if (n == 3) {
-                    Q1.finalScore();
-                    break;
-                }
+    public void singleCorrect(CSVReader obj1) throws CsvValidationException, IOException {
+        questionModel Q1 = new questionModel();
 
-            }
+        ArrayList<String[]> allQuestions = new ArrayList<>();
+        ArrayList<Integer> indexes = new ArrayList<>();
+        ArrayList<Integer> options = new ArrayList<>();
+
+        String[] line1;
+
+        for (int i = 0; i < 3; i++) {
+            indexes.add(i);
         }
-        public void multiCorrectCpp(CSVReader obj) throws CsvValidationException, IOException {
-            int n = 0;
-            String[] data;
-            questionModel Q1 = new questionModel();
-            while ((data = obj.readNext()) != null) {
-                for (String element3 : data
-                ) {
-                    System.out.println(element3 + " ");
-                }
-                n++;
-                int[] arr = new int[4];
+
+        while ((line1 = obj1.readNext()) != null) {
+            allQuestions.add(line1);
+
+
+        }
+
+        Random Q = new Random();
+
+        for (int i = 0; i < allQuestions.get(0).length; i++) {
+
+            for (int j = 0; j < 4; j++) {
+                options.add(j);
+            }
+            int index = Q.nextInt(indexes.size());
+
+            int qNo=indexes.get(index);
+            System.out.println(allQuestions.get(0)[qNo]);
+
+
+            while (options.size() > 0) {
+
+                int choices = new Random().nextInt(options.size());
+
+                System.out.println(allQuestions.get(qNo + 1)[options.get(choices)]);
+                options.remove(choices);
+            }
+
                 System.out.println("Please enter your answer: ");
                 Scanner ans = new Scanner(System.in);
-                if (n == 1) {
-                    arr[n - 1] = ans.nextInt();
-                    arr[n] = ans.nextInt();
-                } else {
-                    arr[n] = ans.nextInt();
+                try {
+                    int input = ans.nextInt();
+                    if (qNo == 0) {
+                        if (input == 4)
+                            Q1.correct();
+                        else
+                            Q1.wrong();
+                    } else if (qNo == 1) {
+                        if (input == 3) {
+                            Q1.correct();
+                        } else
+                            Q1.wrong();
+                    } else {
+                        if (input == 3) {
+                            Q1.correct();
+                        } else {
+                            Q1.wrong();
+                        }
+                    }
                 }
-                if (arr[0] == 1 && arr[1] == 2 || arr[2] == 3 || arr[3] == 3) {
-                    Q1.correct();
-                } else {
-                    Q1.wrong();
+                catch (Exception e){
+                    System.out.println(e);
                 }
-                if (n == 3) {
-                    Q1.finalScore();
-                    break;
+            indexes.remove(index);
+
                 }
 
+
+
+
+        Q1.finalScore();
+    }
+
+
+
+
+
+
+
+
+        public void multiCorrectCpp(CSVReader obj) throws CsvValidationException, IOException {
+            questionModel Q1 = new questionModel();
+
+            ArrayList<String[]> allQuestions = new ArrayList<>();
+            ArrayList<Integer> indexes = new ArrayList<>();
+            ArrayList<Integer> options = new ArrayList<>();
+
+            String[] line1;
+
+            for (int i = 0; i < 3; i++) {
+                indexes.add(i);
             }
+
+            while ((line1 = obj.readNext()) != null) {
+                allQuestions.add(line1);
+
+
+            }
+
+            Random Q = new Random();
+
+            for (int i = 0; i < allQuestions.get(0).length; i++) {
+
+                for (int j = 0; j < 4; j++) {
+                    options.add(j);
+                }
+                int index = Q.nextInt(indexes.size());
+
+                int qNo=indexes.get(index);
+                System.out.println(allQuestions.get(0)[qNo]);
+
+
+                while (options.size() > 0) {
+
+                    int choices = new Random().nextInt(options.size());
+
+                    System.out.println(allQuestions.get(qNo + 1)[options.get(choices)]);
+                    options.remove(choices);
+                }
+
+                System.out.println("Please enter your answer: ");
+                Scanner ans = new Scanner(System.in);
+                try {
+                    int input = ans.nextInt();
+                    if (qNo == 0) {
+                        int input2=ans.nextInt();
+                        if (input == 1 && input2==2) {
+                            Q1.correct();
+                        }
+                        else
+                            Q1.wrong();
+                    } else if (qNo == 1) {
+                        if (input == 3) {
+                            Q1.correct();
+                        } else
+                            Q1.wrong();
+                    } else {
+                        if (input == 3) {
+                            Q1.correct();
+                        } else {
+                            Q1.wrong();
+                        }
+                    }
+                }
+                catch (Exception e){
+                    System.out.println(e);
+                }
+                indexes.remove(index);
+
+            }
+
+
+
+
+            Q1.finalScore();
         }
         public void multiCorrectPython(CSVReader obj) throws CsvValidationException, IOException {
-            int n = 0;
-            String[] data;
             questionModel Q1 = new questionModel();
-            while ((data = obj.readNext()) != null) {
-                for (String element3 : data
-                ) {
-                    System.out.println(element3 + " ");
-                }
-                n++;
-                int[] arr = new int[7];
-                System.out.println("Please enter your answer: ");
-                Scanner ans = new Scanner(System.in);
-                if (n==1){
-                    arr[n - 1] = ans.nextInt();
-                    arr[n]=ans.nextInt();
-                    arr[n+1]=ans.nextInt();
-                }
 
-                else if(n==2){
-                    arr[n+1]=ans.nextInt();
-                    arr[n+2]=ans.nextInt();
-                    arr[n+3]=ans.nextInt();
-                }
-                else {
-                    arr[2*n]=ans.nextInt();
-                }
-                if (arr[0] == 1 && arr[1]==2 && arr[2]==3 ||arr[3] == 1 && arr[4]==2 && arr[5]==3 || arr[6] == 3) {
-                    Q1.correct();
-                } else {
-                    Q1.wrong();
-                }
-                if (n == 3) {
-                    Q1.finalScore();
-                    break;
-                }
+            ArrayList<String[]> allQuestions = new ArrayList<>();
+            ArrayList<Integer> indexes = new ArrayList<>();
+            ArrayList<Integer> options = new ArrayList<>();
+
+            String[] line1;
+
+            for (int i = 0; i < 3; i++) {
+                indexes.add(i);
+            }
+
+            while ((line1 = obj.readNext()) != null) {
+                allQuestions.add(line1);
+
 
             }
+
+            Random Q = new Random();
+
+            for (int i = 0; i < allQuestions.get(0).length; i++) {
+
+                for (int j = 0; j < 4; j++) {
+                    options.add(j);
+                }
+                int index = Q.nextInt(indexes.size());
+
+                int qNo=indexes.get(index);
+                System.out.println(allQuestions.get(0)[qNo]);
+
+
+                while (options.size() > 0) {
+
+                    int choices = new Random().nextInt(options.size());
+
+                    System.out.println(allQuestions.get(qNo + 1)[options.get(choices)]);
+                    options.remove(choices);
+                }
+
+                System.out.println("Please enter your answer: ");
+                Scanner ans = new Scanner(System.in);
+                try {
+                    int input = ans.nextInt();
+                    if (qNo == 0) {
+                        int input2=ans.nextInt();
+                        int input3=ans.nextInt();
+                        if (input == 1 && input2==2 && input3==3) {
+                            Q1.correct();
+                        }
+                        else
+                            Q1.wrong();
+                    } else if (qNo == 1) {
+                        int input2=ans.nextInt();
+                        int input3=ans.nextInt();
+                        if (input == 1 &&input2==2 && input3==3) {
+                            Q1.correct();
+                        } else
+                            Q1.wrong();
+                    } else {
+                        if (input == 3) {
+                            Q1.correct();
+                        } else {
+                            Q1.wrong();
+                        }
+                    }
+                }
+                catch (Exception e){
+                    System.out.println(e);
+                }
+                indexes.remove(index);
+
+            }
+
+
+
+
+            Q1.finalScore();
         }
 
 }
@@ -129,8 +275,20 @@ import java.util.Scanner;
      void wrong();
      void finalScore();
  }
+ class questions{
+     String questions;
+     String correctAns;
+
+     public questions(String questions,String correctAns){
+
+             this.questions=questions;
+             this.correctAns=correctAns;
+
+     }
+ }
  class questionModel implements Result{
      int score=0;
+
      public void correct(){
          System.out.println("Your answer is correct!!\n");
         score++;
@@ -147,6 +305,8 @@ import java.util.Scanner;
  abstract class Topic extends Csv{
     abstract public void questions() throws CsvValidationException, IOException, InterruptedException;
     abstract public void topicName();
+
+
  }
  class Java extends Topic{
      @Override
@@ -183,6 +343,52 @@ import java.util.Scanner;
          toReadFile(CSV_PATH, (byte) 3);
      }
  }
+ class End{
+     public void topics(int num) throws CsvValidationException, IOException, InterruptedException {
+
+         switch (num) {
+             case 1:
+                 Java in = new Java();
+                 in.topicName();
+                 in.questions();
+                 choices(num);
+                 break;
+             case 2:
+                 cPlusPlus in1 = new cPlusPlus();
+                 in1.topicName();
+                 in1.questions();
+                 choices(num);
+                 break;
+             case 3:
+                 python in2=new python();
+                 in2.topicName();
+                 in2.questions();
+                 choices(num);
+                 break;
+         }
+     }
+     public void choices(int num) throws CsvValidationException, IOException, InterruptedException {
+         Scanner sc=new Scanner(System.in);
+         int input;
+         System.out.println("\nDo you wish to play again??\nEnter 0 to start next topic\nEnter 1 to repeat the same topic\nEnter 2 to exit");
+         input=sc.nextInt();
+         if (input==0){
+             num++;
+             if(num>3){
+                 num=1;
+             }
+
+             topics(num);
+         }
+         else if(input==1) {
+             topics(num);
+         }
+         else if(input==2){
+             System.out.println("Thank you for participating in the quiz");
+         }
+     }
+ }
+
 
 public class Main {
     public static void main(String[] args) throws IOException, CsvValidationException, InterruptedException {
@@ -197,32 +403,11 @@ public class Main {
                 "\n3.each question is allotted 1 mark and no negative marking\n\nplease select your topic: \n 1.Java \n2.C++\n3.Python");
         Scanner inputNum = new Scanner(System.in);
         byte num = inputNum.nextByte();
-        switch (num) {
-            case 1:
-                Java in = new Java();
-                in.topicName();
-                in.questions();
-                break;
-            case 2:
-                cPlusPlus in1 = new cPlusPlus();
-                in1.topicName();
-                in1.questions();
-                break;
-            case 3:
-                python in2=new python();
-                in2.topicName();
-                in2.questions();
-                break;
-        }
-        int input;
-        System.out.println("\nDo you wish to play again??\nEnter 0 for yes\nEnter 1 for no");
-        input=inputNum.nextInt();
-        if (input==0){
-            main(args);
-        }
-        else {
-            System.out.println("Thank you for participating in the quiz");
-        }
+        End obj1=new End();
+        obj1.topics(num);
+
+
+
 
 
     }
