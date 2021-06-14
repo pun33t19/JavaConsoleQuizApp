@@ -4,11 +4,10 @@ import com.opencsv.CSVReader;
 import com.opencsv.CSVReaderBuilder;
 import com.opencsv.exceptions.CsvValidationException;
 
-import java.io.BufferedReader;
+
 import java.io.FileReader;
 import java.io.IOException;
 import java.nio.Buffer;
-import java.security.AllPermission;
 import java.util.*;
 
 
@@ -107,12 +106,6 @@ class Csv {
     }
 
 
-
-
-
-
-
-
         public void multiCorrectCpp(CSVReader obj) throws CsvValidationException, IOException {
             questionModel Q1 = new questionModel();
 
@@ -152,25 +145,41 @@ class Csv {
                     System.out.println(allQuestions.get(qNo + 1)[options.get(choices)]);
                     options.remove(choices);
                 }
-
+                int[][] answers={{1,2,3}};
                 System.out.println("Please enter your answer: ");
                 Scanner ans = new Scanner(System.in);
                 try {
-                    int input = ans.nextInt();
+                    int[] input=new int[3];
+                    int correct=0;
                     if (qNo == 0) {
-                        int input2=ans.nextInt();
-                        if (input == 1 && input2==2) {
+                        for (int j=0;j<input.length;j++){
+                            input[j]=ans.nextInt();
+                        }
+                        for (int l=0;l<3;l++){
+                            for(int k=0;k<3;k++) {
+                                if(input[l]==answers[qNo][k]) {
+                                    correct++;
+                                }
+                            }
+                        }
+                        if (correct==3){
                             Q1.correct();
                         }
                         else
                             Q1.wrong();
+
+
                     } else if (qNo == 1) {
-                        if (input == 3) {
+                        int userinput;
+                        userinput=ans.nextInt();
+                        if (userinput==3) {
                             Q1.correct();
                         } else
                             Q1.wrong();
                     } else {
-                        if (input == 3) {
+                        int userinput;
+                        userinput=ans.nextInt();
+                        if (userinput == 3) {
                             Q1.correct();
                         } else {
                             Q1.wrong();
@@ -223,37 +232,61 @@ class Csv {
 
                 while (options.size() > 0) {
 
-                    int choices = new Random().nextInt(options.size());
+                    int choices = Q.nextInt(options.size());
 
                     System.out.println(allQuestions.get(qNo + 1)[options.get(choices)]);
                     options.remove(choices);
                 }
 
+                int[][] answers={{1,2,3},{1,2,3},{3}};
                 System.out.println("Please enter your answer: ");
                 Scanner ans = new Scanner(System.in);
                 try {
-                    int input = ans.nextInt();
+                    int[] input=new int[3];
+                    int correct=0;
                     if (qNo == 0) {
-                        int input2=ans.nextInt();
-                        int input3=ans.nextInt();
-                        if (input == 1 && input2==2 && input3==3) {
+                        for (int j=0;j<input.length;j++){
+                            input[j]=ans.nextInt();
+                        }
+                        for (int l=0;l<3;l++){
+                            for(int k=0;k<3;k++) {
+                                if(input[l]==answers[qNo][k]) {
+                                    correct++;
+                                }
+                            }
+                        }
+                        if (correct==3){
                             Q1.correct();
                         }
                         else
                             Q1.wrong();
+
                     } else if (qNo == 1) {
-                        int input2=ans.nextInt();
-                        int input3=ans.nextInt();
-                        if (input == 1 &&input2==2 && input3==3) {
-                            Q1.correct();
-                        } else
-                            Q1.wrong();
-                    } else {
-                        if (input == 3) {
-                            Q1.correct();
-                        } else {
-                            Q1.wrong();
+                        correct=0;
+                        for (int j=0;j<input.length;j++){
+                            input[j]=ans.nextInt();
                         }
+                        for (int l=0;l<3;l++){
+                            for(int k=0;k<3;k++) {
+                                if(input[l]==answers[qNo][k]) {
+                                    correct++;
+                                }
+                            }
+                        }
+                        if (correct==3){
+                            Q1.correct();
+                        }
+                        else
+                            Q1.wrong();
+
+                    } else {
+                     int single=ans.nextInt();
+                     if (single==answers[qNo][0]){
+                         Q1.correct();
+                     }
+                     else
+                         Q1.wrong();
+
                     }
                 }
                 catch (Exception e){
