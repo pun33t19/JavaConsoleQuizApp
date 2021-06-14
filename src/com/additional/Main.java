@@ -308,17 +308,8 @@ class Csv {
      void wrong();
      void finalScore();
  }
- class questions{
-     String questions;
-     String correctAns;
 
-     public questions(String questions,String correctAns){
 
-             this.questions=questions;
-             this.correctAns=correctAns;
-
-     }
- }
  class questionModel implements Result{
      int score=0;
 
@@ -433,7 +424,8 @@ public class Main {
                 "\n please read the general instructions as follows:\n  " +
                 "1.The questions could be single or multi correct.It will be indicated accordingly beside question number" +
                 " \n2.there are three questions per topic" +
-                "\n3.each question is allotted 1 mark and no negative marking\n\nplease select your topic: \n 1.Java \n2.C++\n3.Python");
+                "\n3.each question is allotted 1 mark and no negative marking\n4.Every option has a unique id represented by the number beside. " +
+                "Enter your answer by typing the unique digit id against the option\nplease select your topic: \n 1.Java \n2.C++\n3.Python");
         Scanner inputNum = new Scanner(System.in);
         byte num = inputNum.nextByte();
         End obj1=new End();
